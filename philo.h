@@ -26,6 +26,6 @@ typedef struct s_philo
     int time_to_think;
 }   t_philo;
 
-
+void parsing(int ac, char **av);
 
 #endif

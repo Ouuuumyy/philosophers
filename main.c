@@ -11,21 +11,21 @@ void init_philo(t_philo *philo, char **av)
     philo->num_of_philo = atoi(av[1]);
     philo->time_to_die = atoi(av[2]);
     philo->time_to_eat = atoi(av[3]);
-    philo->num_of_philo = atoi(av[4]);
+    philo->time_to_think = atoi(av[4]);
 }
 
 int main(int ac, char **av)
 {
     int i = 0;
     t_philo *philo;
-
+    if(ac < 5)
+    {
+        perror("invalid parametters\n");
+        return 2;
+    }
     philo = malloc(sizeof(t_philo));
+    //parsing(ac, av);
     init_philo(philo, av);
-    printf("%d\n", philo->num_of_philo);
-    printf("%d\n", philo->time_to_die);
-    printf("%d\n", philo->time_to_eat);
-    printf("%d\n", philo->time_to_think);
-
     pthread_t ph[philo->num_of_philo];
     while(i < philo->num_of_philo)
     {
