@@ -18,12 +18,6 @@ int is_digit(char *str)
     }
     return (0);
 }
-void exit_error(char *str, t_data *data)
-{
-    printf("Error: %s", str);
-    free(data);
-    exit(1);
-}
 
 int	ft_atoi(const char *str, t_data *data)
 {

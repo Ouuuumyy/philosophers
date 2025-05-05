@@ -15,32 +15,38 @@ void *philosopher_routine(void *arg)
         if(!data->is_running)
         {
             pthread_mutex_unlock(&data->running_lock);
-            break;
+            free_data(data);
+            exit(1);
         }
         pthread_mutex_unlock(&data->running_lock);
-        take_forks(philo, data);
-        eat(philo, data);
-        pthread_mutex_unlock(philo->left_fork);
-        pthread_mutex_unlock(philo->right_fork);
+        if(!take_forks(philo, data))
+            return NULL;
+        eat(philo, data);   
         sleep_and_think(philo, data);
     }
     return NULL;
 }
 void* check_eat_count(t_data *data)
 {
+    int i;
+
+    i = 0;
     if (data->must_eat_count != -1) {
         int all_ate_enough = 1;
-        for (int i = 0; i < data->num_of_philo; i++) {
+        while (i < data->num_of_philo) 
+        {
             if (data->philos[i].meals < data->must_eat_count) {
                 all_ate_enough = 0;
                 break;
             }
+            i++;
         }
         if (all_ate_enough) {
             pthread_mutex_lock(&data->running_lock);
             data->is_running = 0;
             pthread_mutex_unlock(&data->running_lock);
-            print_status(&data->philos[0], data, "all philosophers ate enough");
+            printf("%lld all philosophers ate enough", get_time() - data->start_time);
+            free_data(data);
             exit(1);
         }
     }
@@ -59,6 +65,7 @@ void *death_check_routine(void *arg)
             if(get_time() - data->philos[i].last_meal_time > data->time_to_die)
             {
                 print_status(&data->philos[i], data, "died");
+                free_data(data);
                 exit(1);
                 // pthread_mutex_lock(&data->running_lock);
                 // data->is_running = 0;
@@ -68,7 +75,7 @@ void *death_check_routine(void *arg)
             i++;
         }
         check_eat_count(data);
-        usleep(100);
+        usleep(1000);
     }
     return NULL;
 }

@@ -9,14 +9,6 @@ int main(int ac, char **av)
     init_data(data, av);
     init_philosophers(data);
     create_threads(data);
-    free(data->philos);
-    while(i < data->num_of_philo)
-    {
-        pthread_mutex_destroy(&data->forks[i]);
-        i++;
-    }
-    free(data->forks);
-    pthread_mutex_destroy(&data->print_lock);
-    free(data);
+    free_data(data);
     return 0;
 }

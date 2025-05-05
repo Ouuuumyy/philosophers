@@ -15,7 +15,14 @@ void init_data(t_data *data, char **av)
         data->must_eat_count = ft_atoi(av[5], data);
     data->start_time = get_time();
     data->philos = malloc(data->num_of_philo * sizeof(t_philo));
+    if(!data->philos)
+        exit_error("failed allocation for philos", data);
     data->forks = malloc(sizeof(pthread_mutex_t) * data->num_of_philo);
+    if(!data->forks)
+    {
+        free(data->philos);
+        exit_error("failed allocation for forks", data);
+    }
     while(i < data->num_of_philo)
     {
         pthread_mutex_init(&data->forks[i], NULL);

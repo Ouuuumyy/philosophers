@@ -51,7 +51,7 @@ typedef struct s_data
 int	ft_atoi(const char *str, t_data *data);
 void *philosopher_routine(void *arg);
 void *death_check_routine(void *arg);
-void take_forks(t_philo *philo, t_data *data);
+int take_forks(t_philo *philo, t_data *data);
 long long get_time();
 void print_status(t_philo *philo, t_data *data, char *msg);
 void parsing(int ac, char **av, t_data *data);
@@ -61,5 +61,6 @@ void create_threads(t_data *data);
 void init_data(t_data *data, char **av);
 void sleep_and_think(t_philo *philo, t_data *data);
 void eat(t_philo *philo, t_data *data);
+void free_data(t_data *data);
 
 #endif

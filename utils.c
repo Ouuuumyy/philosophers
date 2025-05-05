@@ -1,5 +1,15 @@
 #include "philo.h"
 
+void exit_error(char *str, t_data *data)
+{
+    printf("Error: %s\n", str);
+    if(data && data->forks && data->philos)
+        free_data(data);
+    else if(data)
+        free(data);
+    exit(1);
+}
+
 long long get_time()
 {
     struct timeval tv;
@@ -20,6 +30,22 @@ void print_status(t_philo *philo, t_data *data, char *msg)
     pthread_mutex_unlock(&data->print_lock);
 }
 
+void free_data(t_data *data)
+{
+    int i;
+    
+    i = 0;
+    while(i < data->num_of_philo)
+    {
+        pthread_mutex_destroy(&data->forks[i]);
+        i++;
+    }
+    free(data->forks);
+    free(data->philos);
+    pthread_mutex_destroy(&data->print_lock);
+    pthread_mutex_destroy(&data->running_lock);
+    free(data);
+}
 void check_running_lock(t_data *data)
 {
     pthread_mutex_lock(&data->running_lock);
@@ -39,49 +65,5 @@ void check_running_lock(t_data *data)
 // 		usleep(time / 10);
 // 	return (0);
 // }
-void take_forks(t_philo *philo, t_data *data)
-{
-    check_running_lock(data);
-    if(philo->id % 2 == 0)
-    {
-        pthread_mutex_lock(philo->right_fork);
-        print_status(philo, data, "has taken a fork");
-        if(!data->is_running)
-        {
-            pthread_mutex_unlock(philo->right_fork);
-            return;
-        }
-        pthread_mutex_lock(philo->left_fork);
-        print_status(philo, data, "has taken a fork");
-    }
-    else
-    {
-        pthread_mutex_lock(philo->left_fork);
-        print_status(philo, data, "has taken a fork");
-        if(!data->is_running)
-        {
-            pthread_mutex_unlock(philo->left_fork);
-            return;
-        }
-        pthread_mutex_lock(philo->right_fork);
-        print_status(philo, data, "has taken a fork");
-    }
-}
 
-void eat(t_philo *philo, t_data *data)
-{
-    check_running_lock(data);
-    print_status(philo, data, "is eating");
-    philo->last_meal_time = get_time();
-    usleep(data->time_to_eat * 1000);
-    philo->meals++;
-}
-
-void sleep_and_think(t_philo *philo, t_data *data)
-{
-    check_running_lock(data);
-    print_status(philo, data, "is sleeping");
-    usleep(data->time_to_think * 1000);
-    print_status(philo, data, "is thinking");
-}
 
