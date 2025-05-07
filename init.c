@@ -9,8 +9,9 @@ void init_data(t_data *data, char **av)
     data->num_of_philo = ft_atoi(av[1],data);
     data->time_to_die = ft_atoi(av[2], data);
     data->time_to_eat = ft_atoi(av[3], data);
-    data->time_to_think = ft_atoi(av[4], data);
+    data->time_to_sleep = ft_atoi(av[4], data);
     data->must_eat_count = -1;
+    data->all_ate_enough = 0;
     if(av[5])
         data->must_eat_count = ft_atoi(av[5], data);
     data->start_time = get_time();

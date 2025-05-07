@@ -9,6 +9,6 @@ int main(int ac, char **av)
     init_data(data, av);
     init_philosophers(data);
     create_threads(data);
-    free_data(data);
+    //free_data(data);
     return 0;
 }

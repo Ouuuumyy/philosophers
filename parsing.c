@@ -53,8 +53,6 @@ void parsing(int ac, char **av, t_data *data)
         num = ft_atoi(av[i], data);
         if(num == 0)
             exit_error("arguments must be > 0\n", data);
-        // else if(i == 1 && num == 1)
-        //     exit_error("only one philosopher, philosopher will always die\n", data);
         i++;
     }
 }

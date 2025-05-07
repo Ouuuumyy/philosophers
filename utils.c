@@ -35,35 +35,39 @@ void free_data(t_data *data)
     int i;
     
     i = 0;
-    while(i < data->num_of_philo)
+   
+    if(data->forks)
     {
-        pthread_mutex_destroy(&data->forks[i]);
-        i++;
+        while(i < data->num_of_philo)
+        {
+            pthread_mutex_destroy(&data->forks[i]);
+            i++;
+        }
+        free(data->forks);
     }
-    free(data->forks);
-    free(data->philos);
-    pthread_mutex_destroy(&data->print_lock);
+     pthread_mutex_destroy(&data->print_lock);
     pthread_mutex_destroy(&data->running_lock);
+    if(data->philos)
+        free(data->philos);
     free(data);
 }
-void check_running_lock(t_data *data)
-{
-    pthread_mutex_lock(&data->running_lock);
-    if(!data->is_running)
-    {
-        pthread_mutex_unlock(&data->running_lock);
-        return;
-    }
-    pthread_mutex_unlock(&data->running_lock);
-}
-// int	ft_usleep(useconds_t time)
+// void check_running_lock(t_data *data)
 // {
-// 	u_int64_t	start;
-
-// 	start = get_time();
-// 	while ((get_time() - start) < time)
-// 		usleep(time / 10);
-// 	return (0);
+//     pthread_mutex_lock(&data->running_lock);
+//     if(!data->is_running)
+//     {
+//         pthread_mutex_unlock(&data->running_lock);
+//         return;
+//     }
+//     pthread_mutex_unlock(&data->running_lock);
 // }
+void ft_usleep(long time, t_data *data)
+{
+    long start;
+
+    start = get_time();
+    while(data->is_running && get_time() - start < time)
+        usleep(200);
+}
 
 

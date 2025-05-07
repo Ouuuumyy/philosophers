@@ -6,7 +6,7 @@
 /*   By: oukadir <oukadir@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 18:44:38 by oukadir           #+#    #+#             */
-/*   Updated: 2025/04/29 18:47:00 by oukadir          ###   ########.fr       */
+/*   Updated: 2025/05/07 15:54:26 by oukadir          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ typedef struct s_data
     int num_of_philo;
     int time_to_die;
     int time_to_eat;
-    int time_to_think;
+    int time_to_sleep;
     int must_eat_count;
     long long start_time;
     pthread_mutex_t *forks;
@@ -45,9 +45,10 @@ typedef struct s_data
     pthread_t monitor_thread;
     t_philo *philos;
     int is_running;
+    int all_ate_enough;
 }   t_data;
 
-
+void check_running_lock(t_data *data);
 int	ft_atoi(const char *str, t_data *data);
 void *philosopher_routine(void *arg);
 void *death_check_routine(void *arg);
@@ -62,5 +63,6 @@ void init_data(t_data *data, char **av);
 void sleep_and_think(t_philo *philo, t_data *data);
 void eat(t_philo *philo, t_data *data);
 void free_data(t_data *data);
-
+void ft_usleep(long time, t_data *data);
+void* check_eat_count(t_data *data, t_philo *philo);
 #endif

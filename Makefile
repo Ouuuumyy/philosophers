@@ -9,7 +9,7 @@ SRC = 	init.c \
 
 OBJ = $(SRC:.c=.o)
 
-FLAGS = -Wall -Werror -Wextra
+FLAGS = -Wall -Werror -Wextra #-g -fsanitize=leak
 
 CC = gcc
 
